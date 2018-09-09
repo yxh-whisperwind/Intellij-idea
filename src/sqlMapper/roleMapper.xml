@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "mapper.RoleMapper">
+    <resultMap id = "roleMap" type = "role">
+        <id property = "id" column = "id" />
+        <result property = "roleName" column = "role_name" typeHandler = "typeHandler.MyTypeHandler" />
+        <result property = "note" column = "note" />
+    </resultMap>
+
+    <sql id = "roleColumns">
+         	id,role_name,note
+         </sql>
+
+    <select id = "getRole"  resultMap = "roleMap" >
+        select <include refid  = "roleColumns" /> from t_role where id = #{id}
+    </select>
+
+    <delete id = "deleteRole" parameterType = "Integer">
+             delete from t_role where id = #{id}
+         </delete>
+
+    <insert id = "insertRole" parameterType = "pojo.Role" useGeneratedKeys = "true"
+            keyColumn = "id" keyProperty = "id">
+             insert into t_role(role_name,note) values(#{roleName},#{note})
+         </insert>
+
+    <update id = "updateRole" parameterType = "pojo.Role">
+        update t_role
+        <set>
+            <if test = "roleName != null and roleName != ''">
+                role_name = #{roleName},
+            </if>
+            <if test = "note != null and note != ''">
+                note = #{note},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <select id = "findRoles" parameterType = "String" resultMap = "roleMap">
+        <bind name = "note" value = "'%'+note+'%'" />
+        <bind name = "roleName" value = "'%'+roleName+'%'" />
+
+        select <include refid = "roleColumns"/> from t_role
+        <where>
+            <choose>
+                <when test = "roleName != null and roleName != ''">
+                    and role_name like #{roleName}
+                </when>
+                <when test = "note != null and note != ''">
+                    and note like #{note}
+                </when>
+                <otherwise>
+
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <select id = "selectId" resultMap = "roleMap">
+        select <include refid = "roleColumns" /> from t_role where id in
+        <foreach item = "id" index = "index" collection = "list"
+                 open = "(" separator = "," close = ")"	>
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>

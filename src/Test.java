@@ -1,21 +1,26 @@
-import java.io.*;
-import java.net.*;
-import java.util.Arrays;
+import mapper.RoleMapper;
+import org.apache.ibatis.session.SqlSession;
+import pojo.Role;
+
+import java.io.IOException;
 
 public class Test {
 
     public static void main (String[] args) throws IOException{
-        DatagramSocket datagramSocket = new DatagramSocket(7321,InetAddress.getLocalHost());
-        byte[] arr = new byte[1024];
-        DatagramPacket packet = new DatagramPacket(arr,arr.length);
-        while(true) {
-            datagramSocket.receive(packet);
-            byte[] b = packet.getData();
-            if (b==null) {
-                break;
+        SqlSession sqlSession = null;
+        try {
+            sqlSession = SqlSessionFactoryUtils.openSqlSession();
+            RoleMapper roleMapper = sqlSession.getMapper(RoleMapper.class);
+            Role role = roleMapper.getRole(1);
+            sqlSession.commit();
+            System.out.println(role.roleName);
+        } finally {
+            if (sqlSession != null) {
+                sqlSession.close();
             }
-            System.out.println(new String(b));
         }
+
+
 
     }
 }
