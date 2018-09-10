@@ -17,7 +17,7 @@ public class MyTypeHandler implements TypeHandler<String> {
 
     @Override
     public String getResult(ResultSet resultSet, String s) throws SQLException {
-        return resultSet.getString(s);
+        return resultSet.getString(s)+"columnIndex";
     }
 
     @Override

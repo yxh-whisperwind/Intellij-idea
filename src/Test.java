@@ -1,8 +1,9 @@
-import mapper.RoleMapper;
+import mapper.SexMapper;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Role;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Test {
 
@@ -10,10 +11,18 @@ public class Test {
         SqlSession sqlSession = null;
         try {
             sqlSession = SqlSessionFactoryUtils.openSqlSession();
-            RoleMapper roleMapper = sqlSession.getMapper(RoleMapper.class);
-            Role role = roleMapper.getRole(1);
-            sqlSession.commit();
-            System.out.println(role.roleName);
+            sqlSession.commit(false);
+            SexMapper sexMapper = sqlSession.getMapper(SexMapper.class);
+            List<Role> list = sexMapper.findRoles("802","");
+            for (Role role:list) {
+                try {
+                    System.out.println(role.getId()+"\t"+role.getSexEnum().getSex());
+                } catch (NullPointerException e) {
+                    System.out.println(role.getId());
+                   // e.printStackTrace();
+                }
+            }
+
         } finally {
             if (sqlSession != null) {
                 sqlSession.close();

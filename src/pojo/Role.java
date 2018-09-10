@@ -6,9 +6,12 @@ import java.io.Serializable;
 
 @Alias("role")
 public class Role implements Serializable {
-    public Integer id;
-    public String roleName;
-    public String note;
+    private Integer id;
+    private String roleName;
+    private String note;
+    private SexEnum sexEnum;
+
+    public SexEnum getSexEnum() { return sexEnum; }
 
     public Integer getId() {
         return id;
@@ -16,6 +19,10 @@ public class Role implements Serializable {
 
     public String getRoleName() {
         return roleName;
+    }
+
+    public String getNote() {
+        return note;
     }
 
     public void setId(Integer id) {
@@ -30,9 +37,7 @@ public class Role implements Serializable {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
+    public void setSexEnum(SexEnum sexEnum) { this.sexEnum = sexEnum; }
 
 
 

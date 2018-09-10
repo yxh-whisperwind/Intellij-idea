@@ -40,9 +40,9 @@
 
     <mappers>
         <mapper resource="sqlMapper/roleMapper.xml"/>
-        <!--
+
         <mapper resource="sqlMapper/sexMapper.xml"/>
-        -->
+
     </mappers>
 
 </configuration>
